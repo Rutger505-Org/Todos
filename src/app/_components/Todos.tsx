@@ -3,7 +3,7 @@
 import { api } from "@/trpc/react";
 
 export function Todos() {
-  const { data: posts, isPending, error } = api.todo.getAll.useQuery();
+  const { data: posts, isPending, error } = api.todo.getForUser.useQuery();
 
   return (
     <div>

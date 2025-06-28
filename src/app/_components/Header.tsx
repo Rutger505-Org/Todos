@@ -4,13 +4,14 @@ import { auth, signIn, signOut } from "@/server/auth";
 export async function Header() {
   const session = await auth();
 
+  console.log("Session", session);
   return (
     <header className="flex justify-between p-10">
       <span>Todo&#39;s</span>
 
       {session ? (
-        <div className={"flex gap-5"}>
-          <span>{session.user.name}</span>
+        <div className={"flex items-center gap-5"}>
+          <span>{session.user.name ?? session.user.email}</span>
           <form
             action={async () => {
               "use server";
