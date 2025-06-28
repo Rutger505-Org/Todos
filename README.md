@@ -20,20 +20,21 @@ cp .env.example .env
 #### Variables
 
 - `DOCKERHUB_USERNAME` - Dockerhub username
-- `DEPLOYMENT_AUTH_EMAIL_FROM` - Name and Email address of magic link sender (e.g. `Next Template <example@email.com>`)
-- `DEPLOYMENT_AUTH_EMAIL_HOST` - SMTP host (e.g. `smtp.gmail.com`)
-- `DEPLOYMENT_AUTH_EMAIL_PORT` - SMTP port (e.g. `465`)
-- `DEPLOYMENT_AUTH_EMAIL_USER` - SMTP username (for gmail, this is your email address)
+- `AUTH_EMAIL_FROM_NAME` - Name and Email address of magic link sender (e.g. `Next Template <example@email.com>`)
 
 #### Secrets
 
-- `DEPLOYMENT_AUTH_EMAIL_PASSWORD` - SMTP password (for gmail, this is your app password)
+- `AUTH_EMAIL_USER` - SMTP username (for gmail, this is your email address)
+- `AUTH_EMAIL_HOST` - SMTP host (e.g. `smtp.gmail.com`)
+- `AUTH_EMAIL_PORT` - SMTP port (e.g. `465`)
+- `AUTH_EMAIL_PASSWORD` - SMTP password (for gmail, this is your app password)
 - `DEPLOYMENT_DISCORD_WEBHOOK_URL` - Discord webhook url for alerts in application
 - `DOCKERHUB_TOKEN` - Dockerhub password
 
 ## Deployments
 
-To configure deployment variables. Create a Github variable or secret and prefix it with `DEPLOYMENT_`.
+To configure deployment variables.
+Create a Github variable or secret and prefix it with `DEPLOYMENT_`.
 
 ## Guides
 
