@@ -30,12 +30,13 @@ export const posts = sqliteTable(
       () => new Date(),
     ),
   },
-  (example) => ({
-    createdByIdIdx: index("created_by_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  }),
+  (table) => [
+    index("created_by_idx").on(table.createdById),
+    index("name_idx").on(table.name),
+  ],
 );
 
+// Auth required tables
 export const users = sqliteTable("user", {
   id: text("id", { length: 255 })
     .notNull()
