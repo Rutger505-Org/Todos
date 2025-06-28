@@ -110,6 +110,7 @@ jobs:
 
                 unfilteredSecrets: JSON.parse(process.env.SECRETS),
                 secrets: {
+                  AUTH_SECRET: "${{ secrets.AUTH_SECRET }}",
                   AUTH_EMAIL_FROM: "${{ vars.AUTH_EMAIL_FROM_NAME }} <${{ secrets.AUTH_EMAIL_USER }}>",
                   AUTH_EMAIL_HOST: "${{ secrets.AUTH_EMAIL_HOST }}",
                   AUTH_EMAIL_PORT: "${{ secrets.AUTH_EMAIL_PORT }}",
