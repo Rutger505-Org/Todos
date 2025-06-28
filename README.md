@@ -19,6 +19,8 @@ cp .env.example .env
 
 #### Variables
 
+- `APPLICATION_NAME` - Used as an identifier for multiple actions such as the terraform workspace.
+- `IMAGE_REPOSITORY` - Image repository to store image to.
 - `BASE_DOMAIN` - Domain where to host the application (tags deployed to this domain, pull request's to a subdomain: the sha of the commit.)
 - `DOCKERHUB_USERNAME` - Dockerhub username
 - `AUTH_EMAIL_FROM_NAME` - Name and Email address of magic link sender (e.g. `Next Template <example@email.com>`)
