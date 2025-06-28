@@ -1,4 +1,5 @@
 import { Header } from "@/app/_components/Header";
+import { Todos } from "@/app/_components/Todos";
 
 export default async function Home() {
   return (
@@ -10,7 +11,7 @@ export default async function Home() {
           <h1 className="text-4xl font-bold">Todo&#39;s!</h1>
         </div>
 
-        <div className={"flex flex-col gap-7"}>No todo&#39;s yet</div>
+        <Todos />
       </main>
     </div>
   );
