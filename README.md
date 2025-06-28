@@ -22,6 +22,7 @@ cp .env.example .env
 
 #### Secrets
 
+- `AUTH_SECRET` - AUTH secret for encrypting jwt's
 - `AUTH_EMAIL_USER` - SMTP username (for gmail, this is your email address)
 - `AUTH_EMAIL_HOST` - SMTP host (e.g. `smtp.gmail.com`)
 - `AUTH_EMAIL_PORT` - SMTP port (e.g. `465`)
