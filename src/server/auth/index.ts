@@ -7,4 +7,14 @@ const { auth: uncachedAuth, handlers, signIn, signOut } = NextAuth(authConfig);
 
 const auth = cache(uncachedAuth);
 
-export { auth, handlers, signIn, signOut };
+async function ensureAuthenticated() {
+  const session = await auth();
+
+  if (!session) {
+    throw new Error("Unauthorized");
+  }
+
+  return session;
+}
+
+export { auth, ensureAuthenticated, handlers, signIn, signOut };

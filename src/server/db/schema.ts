@@ -1,3 +1,4 @@
+import { createId } from "@paralleldrive/cuid2";
 import { relations, sql } from "drizzle-orm";
 import {
   index,
@@ -15,11 +16,14 @@ import { type AdapterAccount } from "next-auth/adapters";
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 
-export const posts = sqliteTable(
-  "post",
+export const todos = sqliteTable(
+  "todo",
   {
-    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    name: text("name", { length: 256 }).notNull(),
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => createId()),
+    name: text("name", { length: 255 }).notNull(),
+    order: int("order", { mode: "number" }).notNull().default(0),
     createdById: text("created_by", { length: 255 })
       .notNull()
       .references(() => users.id),
@@ -30,12 +34,14 @@ export const posts = sqliteTable(
       () => new Date(),
     ),
   },
-  (example) => ({
-    createdByIdIdx: index("created_by_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  }),
+  (table) => [
+    index("name_idx").on(table.name),
+    index("order_idx").on(table.order),
+    index("created_by_idx").on(table.createdById),
+  ],
 );
 
+// Auth required tables
 export const users = sqliteTable("user", {
   id: text("id", { length: 255 })
     .notNull()
