@@ -2,7 +2,9 @@ import { env } from "@/env";
 
 export async function middleware() {
   if (env.NODE_ENV === "development") {
-    const delay = Math.floor(Math.random() * 150) + 150;
+    const delay =
+      Math.floor(Math.random() * env.DEV_DELAY_DEVIATION_MS) +
+      env.DEV_DELAY_BASE_MS;
     console.log(`Artificial delay of ${delay}ms`);
     await new Promise((resolve) => setTimeout(resolve, delay));
   }

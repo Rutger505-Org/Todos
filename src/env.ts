@@ -17,6 +17,10 @@ export const env = createEnv({
     AUTH_EMAIL_PORT: z.coerce.number(),
     AUTH_EMAIL_USER: z.string(),
     AUTH_EMAIL_PASSWORD: z.string(),
+
+    // Artificial delay configuration for development
+    DEV_DELAY_BASE_MS: z.coerce.number().optional().default(150),
+    DEV_DELAY_DEVIATION_MS: z.coerce.number().optional().default(75),
   },
   // Prefixed with NEXT_PUBLIC_
   client: {},
