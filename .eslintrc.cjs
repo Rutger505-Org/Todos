@@ -4,12 +4,13 @@ const config = {
   parserOptions: {
     project: true,
   },
-  plugins: ["@typescript-eslint", "drizzle"],
+  plugins: ["@typescript-eslint", "drizzle", "@tanstack/query"],
   extends: [
     "next/core-web-vitals",
     "next/typescript",
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
     "prettier",
   ],
   rules: {
