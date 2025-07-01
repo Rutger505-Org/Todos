@@ -1,7 +1,8 @@
 import { CreateTodo } from "@/app/_components/CreateTodo";
 import { Header } from "@/app/_components/Header";
 import { Todos } from "@/app/_components/Todos";
-import { auth } from "@/server/auth";
+import { Button } from "@/components/ui/button";
+import { auth, signIn } from "@/server/auth";
 
 export default async function Home() {
   const session = await auth();
@@ -16,15 +17,23 @@ export default async function Home() {
         </div>
 
         {session ? (
-          <>
+          <div className={"flex flex-col gap-10"}>
             <CreateTodo />
             <Todos />
-          </>
+          </div>
         ) : (
           <div className="flex flex-col items-center space-y-2.5">
             <h2 className="text-2xl font-semibold">Please sign in</h2>
-            <p> You can sign in with a magic link</p>
-            <p> You will recieve an email with a link to sign in</p>
+            <p>Sign in with a magic email link</p>
+
+            <form
+              action={async () => {
+                "use server";
+                await signIn();
+              }}
+            >
+              <Button>Sign in with email</Button>
+            </form>
           </div>
         )}
       </main>

@@ -34,6 +34,19 @@ export function Todo({ todo }: Readonly<Props>) {
     },
   });
 
+  function handleBlur() {
+    if (name.trim() === "") {
+      setName(todo.name);
+      return;
+    }
+
+    if (todo.name === name) {
+      return;
+    }
+
+    updateMutation.mutate({ id: todo.id, name });
+  }
+
   return (
     <div
       className={
@@ -43,7 +56,7 @@ export function Todo({ todo }: Readonly<Props>) {
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
-        onBlur={() => updateMutation.mutate({ id: todo.id, name })}
+        onBlur={handleBlur}
         className={
           "m-1 min-w-0 flex-1 cursor-pointer p-1 text-xl outline-none focus:cursor-text focus:border-b focus:border-black"
         }
