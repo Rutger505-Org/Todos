@@ -16,6 +16,7 @@ import { type AdapterAccount } from "next-auth/adapters";
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 
+export type Todo = typeof todos.$inferSelect;
 export const todos = sqliteTable(
   "todo",
   {
@@ -35,9 +36,9 @@ export const todos = sqliteTable(
     ),
   },
   (table) => [
-    index("name_idx").on(table.name),
-    index("order_idx").on(table.order),
-    index("created_by_idx").on(table.createdById),
+    index("todo_name_idx").on(table.name),
+    index("todo_order_idx").on(table.order),
+    index("todo_created_by_idx").on(table.createdById),
   ],
 );
 

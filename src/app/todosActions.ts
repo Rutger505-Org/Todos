@@ -3,6 +3,7 @@
 import { ensureAuthenticated } from "@/server/auth";
 import { db } from "@/server/db";
 import { todos } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
 export async function getTodos() {
   const session = await ensureAuthenticated();
@@ -16,15 +17,25 @@ export async function getTodos() {
 export async function addTodo({ name }: { name: string }) {
   const session = await ensureAuthenticated();
 
-  await db.insert(todos).values({
+  return db.insert(todos).values({
     name,
     createdById: session.user.id,
   });
+}
 
-  return db.query.todos.findMany({
-    orderBy: (posts, { desc, asc }) => [
-      asc(posts.order),
-      desc(posts.createdAt),
-    ],
-  });
+export async function deleteTodo({ id }: { id: string }) {
+  await ensureAuthenticated();
+
+  return db.delete(todos).where(eq(todos.id, id));
+}
+
+export async function changeTodo({ id, name }: { id: string; name: string }) {
+  await ensureAuthenticated();
+
+  return db
+    .update(todos)
+    .set({
+      name,
+    })
+    .where(eq(todos.id, id));
 }

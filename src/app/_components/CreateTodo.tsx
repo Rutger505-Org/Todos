@@ -42,28 +42,30 @@ export function CreateTodo() {
   });
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit((data) => mutate(data))}
-        className="flex gap-2"
-      >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Your new Todo" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button disabled={isPending} type="submit">
-          <PlusIcon />
-        </Button>
-      </form>
+    <div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit((data) => mutate(data))}
+          className="flex flex-1 gap-2"
+        >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className={"grow"}>
+                <FormControl>
+                  <Input placeholder="Enter todo" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button disabled={isPending} type="submit" size={"icon"}>
+            <PlusIcon />
+          </Button>
+        </form>
+      </Form>
       <span>{error?.message}</span>
-    </Form>
+    </div>
   );
 }
