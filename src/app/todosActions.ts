@@ -29,7 +29,7 @@ export async function deleteTodo({ id }: { id: string }) {
   return db.delete(todos).where(eq(todos.id, id));
 }
 
-export async function changeTodo({ name }: { name: string }) {
+export async function changeTodo({ id, name }: { id: string; name: string }) {
   await ensureAuthenticated();
 
   return db
@@ -37,5 +37,5 @@ export async function changeTodo({ name }: { name: string }) {
     .set({
       name,
     })
-    .where(eq(todos.id, name));
+    .where(eq(todos.id, id));
 }

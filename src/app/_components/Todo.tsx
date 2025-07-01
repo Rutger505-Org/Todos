@@ -43,7 +43,7 @@ export function Todo({ todo }: Readonly<Props>) {
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
-        onBlur={() => updateMutation.mutate({ name })}
+        onBlur={() => updateMutation.mutate({ id: todo.id, name })}
         className={
           "m-1 min-w-0 flex-1 cursor-pointer p-1 text-xl outline-none focus:cursor-text focus:border-b focus:border-black"
         }
