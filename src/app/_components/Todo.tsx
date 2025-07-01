@@ -1,10 +1,11 @@
 "use client";
 
-import { deleteTodo } from "@/app/todosActions";
+import { changeTodo, deleteTodo } from "@/app/todosActions";
 import { type Todo } from "@/server/db/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { clsx } from "clsx";
 import { Trash2 } from "lucide-react";
+import { useState } from "react";
 
 interface Props {
   todo: Todo;
@@ -13,8 +14,19 @@ interface Props {
 export function Todo({ todo }: Readonly<Props>) {
   const queryClient = useQueryClient();
 
+  const [name, setName] = useState(todo.name);
+
   const deleteMutation = useMutation({
     mutationFn: deleteTodo,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["todos"],
+      });
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: changeTodo,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["todos"],
@@ -28,7 +40,14 @@ export function Todo({ todo }: Readonly<Props>) {
         "flex w-72 items-center justify-between rounded-xl border px-3"
       }
     >
-      <span className={"py-2 pl-2 text-xl"}>{todo.name}</span>
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        onBlur={() => updateMutation.mutate({ name })}
+        className={
+          "m-1 min-w-0 flex-1 cursor-pointer p-1 text-xl outline-none focus:cursor-text focus:border-b focus:border-black"
+        }
+      />
       <button
         onClick={() => deleteMutation.mutate({ id: todo.id })}
         className={clsx(
