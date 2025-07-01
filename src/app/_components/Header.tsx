@@ -4,7 +4,6 @@ import { auth, signIn, signOut } from "@/server/auth";
 export async function Header() {
   const session = await auth();
 
-  console.log("Session", session);
   return (
     <header className="flex justify-between p-10">
       <span>Todo&#39;s</span>

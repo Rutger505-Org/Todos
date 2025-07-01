@@ -1,15 +1,23 @@
 "use client";
 
-import { api } from "@/trpc/react";
+import { getTodos } from "@/app/todosActions";
+import { useQuery } from "@tanstack/react-query";
 
 export function Todos() {
-  const { data: posts, isPending, error } = api.todo.getForUser.useQuery();
+  const {
+    data: posts,
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: ["todos"],
+    queryFn: getTodos,
+  });
 
   return (
     <div>
       {isPending && "Loading..."}
-      {error && `Something weng wrong: ${error.message}`}
-      {posts?.length === 0 && "No posts yet" && <div>No posts yet</div>}
+      {error && `Something went wrong: ${error.message}`}
+      {posts?.length === 0 && <div>No posts yet</div>}
       {posts?.map((post) => <div key={post.id}>{post.name}</div>)}
     </div>
   );
