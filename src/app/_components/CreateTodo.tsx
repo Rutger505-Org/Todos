@@ -62,8 +62,8 @@ export function CreateTodo() {
         <Button disabled={isPending} type="submit">
           <PlusIcon />
         </Button>
+        <span>{error?.message}</span>
       </form>
-      <span>{error?.message}</span>
     </Form>
   );
 }
