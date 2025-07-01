@@ -1,7 +1,6 @@
 import { env } from "@/env";
-import { type NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export async function middleware() {
   if (env.NODE_ENV === "development") {
     const delay = Math.floor(Math.random() * 150) + 150;
     console.log(`Artificial delay of ${delay}ms`);
