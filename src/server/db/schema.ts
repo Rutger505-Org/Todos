@@ -16,6 +16,7 @@ import { type AdapterAccount } from "next-auth/adapters";
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 
+export type Todo = typeof todos.$inferSelect;
 export const todos = sqliteTable(
   "todo",
   {

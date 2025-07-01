@@ -1,11 +1,12 @@
 "use client";
 
+import { Todo } from "@/app/_components/Todo";
 import { getTodos } from "@/app/todosActions";
 import { useQuery } from "@tanstack/react-query";
 
 export function Todos() {
   const {
-    data: posts,
+    data: todos,
     isPending,
     error,
   } = useQuery({
@@ -13,12 +14,19 @@ export function Todos() {
     queryFn: getTodos,
   });
 
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Something went wrong: {error.message}</div>;
+  }
+  if (todos?.length === 0) {
+    return <div>No posts yet</div>;
+  }
+
   return (
-    <div>
-      {isPending && "Loading..."}
-      {error && `Something went wrong: ${error.message}`}
-      {posts?.length === 0 && <div>No posts yet</div>}
-      {posts?.map((post) => <div key={post.id}>{post.name}</div>)}
+    <div className={"flex flex-col gap-5"}>
+      {todos?.map((post) => <Todo key={post.id} todo={post} />)}
     </div>
   );
 }
