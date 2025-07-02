@@ -1,5 +1,7 @@
 "use server";
 
+import "server-only";
+
 import { ensureAuthenticated } from "@/server/auth";
 import { db } from "@/server/db";
 import { todos } from "@/server/db/schema";
@@ -17,7 +19,7 @@ export async function getTodos() {
 export async function addTodo({ name }: { name: string }) {
   const session = await ensureAuthenticated();
 
-  return db.insert(todos).values({
+  await db.insert(todos).values({
     name,
     createdById: session.user.id,
   });
@@ -26,16 +28,30 @@ export async function addTodo({ name }: { name: string }) {
 export async function deleteTodo({ id }: { id: string }) {
   await ensureAuthenticated();
 
-  return db.delete(todos).where(eq(todos.id, id));
+  await db.delete(todos).where(eq(todos.id, id));
 }
 
-export async function changeTodo({ id, name }: { id: string; name: string }) {
+export async function updateTodo({
+  id,
+  name,
+  completed,
+}: {
+  id: string;
+  name?: string;
+  completed?: boolean;
+}) {
   await ensureAuthenticated();
+
+  if (!name && completed === undefined) {
+    throw new Error("At least one field must be updated");
+  }
 
   return db
     .update(todos)
     .set({
-      name,
+      ...(name && { name }),
+      ...(completed !== undefined && { completed }),
     })
-    .where(eq(todos.id, id));
+    .where(eq(todos.id, id))
+    .returning();
 }

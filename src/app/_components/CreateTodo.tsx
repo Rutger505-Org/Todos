@@ -1,6 +1,5 @@
 "use client";
 
-import { addTodo } from "@/app/todosActions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,8 +9,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAddTodo } from "@/hooks/todos/useAddTodo";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PlusIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,16 +22,7 @@ const createTodoSchema = z.object({
 type CreateTodoSchema = z.infer<typeof createTodoSchema>;
 
 export function CreateTodo() {
-  const queryClient = useQueryClient();
-
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: addTodo,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["todos"],
-      });
-    },
-  });
+  const { mutate, error, isPending } = useAddTodo();
 
   const form = useForm<CreateTodoSchema>({
     resolver: zodResolver(createTodoSchema),
@@ -42,7 +32,7 @@ export function CreateTodo() {
   });
 
   return (
-    <div>
+    <div className={"flex-1"}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((data) => mutate(data))}
