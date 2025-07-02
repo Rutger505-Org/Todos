@@ -31,13 +31,27 @@ export async function deleteTodo({ id }: { id: string }) {
   await db.delete(todos).where(eq(todos.id, id));
 }
 
-export async function changeTodo({ id, name }: { id: string; name: string }) {
+export async function updateTodo({
+  id,
+  name,
+  completed,
+}: {
+  id: string;
+  name?: string;
+  completed?: boolean;
+}) {
   await ensureAuthenticated();
+
+  if (!name && completed === undefined) {
+    throw new Error("At least one field must be updated");
+  }
 
   return db
     .update(todos)
     .set({
-      name,
+      ...(name && { name }),
+      ...(completed !== undefined && { completed }),
     })
-    .where(eq(todos.id, id));
+    .where(eq(todos.id, id))
+    .returning();
 }

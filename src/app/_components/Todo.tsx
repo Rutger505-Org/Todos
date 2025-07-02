@@ -1,6 +1,6 @@
 "use client";
 
-import { changeTodo, deleteTodo } from "@/app/todosActions";
+import { deleteTodo, updateTodo } from "@/app/todosActions";
 import { type Todo } from "@/server/db/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { clsx } from "clsx";
@@ -26,7 +26,7 @@ export function Todo({ todo }: Readonly<Props>) {
   });
 
   const updateMutation = useMutation({
-    mutationFn: changeTodo,
+    mutationFn: updateTodo,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["todos"],

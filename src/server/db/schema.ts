@@ -25,6 +25,7 @@ export const todos = sqliteTable(
       .$defaultFn(() => createId()),
     name: text("name", { length: 255 }).notNull(),
     order: int("order", { mode: "number" }).notNull().default(0),
+    completed: int("completed", { mode: "boolean" }).notNull().default(0),
     createdById: text("created_by", { length: 255 })
       .notNull()
       .references(() => users.id),
