@@ -1,9 +1,9 @@
 "use client";
 
 import { TodoAction } from "@/app/_components/TodoAction";
-import { deleteTodo, updateTodo } from "@/app/todosActions";
+import { useDeleteTodo } from "@/hooks/todos/useDeleteTodo";
+import { useUpdateTodo } from "@/hooks/todos/useUpdateTodo";
 import { type Todo } from "@/server/db/schema";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { clsx } from "clsx";
 import { Circle, CircleCheck, CircleX, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -13,28 +13,11 @@ interface Props {
 }
 
 export function Todo({ todo }: Readonly<Props>) {
-  const queryClient = useQueryClient();
-
   const [name, setName] = useState(todo.name);
   const [completed, setCompleted] = useState(todo.completed);
 
-  const deleteMutation = useMutation({
-    mutationFn: deleteTodo,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["todos"],
-      });
-    },
-  });
-
-  const updateMutation = useMutation({
-    mutationFn: updateTodo,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["todos"],
-      });
-    },
-  });
+  const deleteMutation = useDeleteTodo();
+  const updateMutation = useUpdateTodo();
 
   function handleBlur() {
     if (name.trim() === "") {

@@ -1,18 +1,10 @@
 "use client";
 
 import { Todo } from "@/app/_components/Todo";
-import { getTodos } from "@/app/todosActions";
-import { useQuery } from "@tanstack/react-query";
+import { useTodos } from "@/hooks/todos/useTodos";
 
 export function Todos() {
-  const {
-    data: todos,
-    isPending,
-    error,
-  } = useQuery({
-    queryKey: ["todos"],
-    queryFn: getTodos,
-  });
+  const { data: todos, isPending, error } = useTodos();
 
   if (isPending) {
     return <div>Loading...</div>;
