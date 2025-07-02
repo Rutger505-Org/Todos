@@ -6,7 +6,7 @@ export async function Header() {
 
   return (
     <header className="flex justify-between p-10">
-      <span>Todo&#39;s</span>
+      <span>Todos</span>
 
       {session ? (
         <div className={"flex items-center gap-5"}>

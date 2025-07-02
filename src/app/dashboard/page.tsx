@@ -11,7 +11,7 @@ export default async function Dashboard() {
 
   return (
     <main className={"space-y-10"}>
-      <h1 className="text-center text-4xl font-bold">Todo&#39;s!</h1>
+      <h1 className="text-center text-4xl font-bold">Todos!</h1>
 
       <div className={"mx-auto flex max-w-96 flex-col gap-5"}>
         <CreateTodo />

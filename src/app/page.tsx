@@ -11,7 +11,7 @@ export default async function Home() {
   return (
     <main className={"flex flex-col items-center gap-10"}>
       <div className={"flex flex-col items-center space-y-2.5"}>
-        <h1 className="text-4xl font-bold">Todo&#39;s!</h1>
+        <h1 className="text-4xl font-bold">Todos!</h1>
       </div>
 
       <h2 className="text-2xl font-semibold">Please sign in</h2>
