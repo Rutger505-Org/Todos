@@ -5,7 +5,7 @@ import { deleteTodo, updateTodo } from "@/app/todosActions";
 import { type Todo } from "@/server/db/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { clsx } from "clsx";
-import { Circle, CircleX, Trash2 } from "lucide-react";
+import { Circle, CircleCheck, CircleX, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
@@ -16,6 +16,7 @@ export function Todo({ todo }: Readonly<Props>) {
   const queryClient = useQueryClient();
 
   const [name, setName] = useState(todo.name);
+  const [completed, setCompleted] = useState(todo.completed);
 
   const deleteMutation = useMutation({
     mutationFn: deleteTodo,
@@ -48,6 +49,12 @@ export function Todo({ todo }: Readonly<Props>) {
     updateMutation.mutate({ id: todo.id, name });
   }
 
+  function handleToggleCompleted() {
+    setCompleted(!completed);
+
+    updateMutation.mutate({ id: todo.id, completed: !todo.completed });
+  }
+
   return (
     <div
       className={
@@ -64,20 +71,12 @@ export function Todo({ todo }: Readonly<Props>) {
         <Trash2 size={16} />
       </TodoAction>
 
-      <TodoAction
-        onClick={() =>
-          updateMutation.mutate({ id: todo.id, completed: !todo.completed })
-        }
-        className={clsx(
-          "group",
-          deleteMutation.isPending && "cursor-not-allowed opacity-50",
-        )}
-      >
+      <TodoAction onClick={handleToggleCompleted} className={clsx("group")}>
         <span className={"group-hover:hidden"}>
-          <Circle size={16} />
+          {completed ? <CircleCheck size={16} /> : <Circle size={16} />}
         </span>
         <span className={"hidden group-hover:inline"}>
-          <CircleX size={16} />
+          {completed ? <CircleX size={16} /> : <CircleCheck size={16} />}
         </span>
       </TodoAction>
 
