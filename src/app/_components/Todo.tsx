@@ -48,7 +48,11 @@ export function Todo({ todo }: Readonly<Props>) {
   }
 
   return (
-    <div className={"flex w-72 items-center justify-between rounded-xl px-3"}>
+    <div
+      className={
+        "flex max-w-96 items-center justify-between rounded-xl px-3 focus-within:shadow hover:shadow"
+      }
+    >
       <button
         onClick={() => deleteMutation.mutate({ id: todo.id })}
         className={clsx(
@@ -63,7 +67,7 @@ export function Todo({ todo }: Readonly<Props>) {
         onChange={(e) => setName(e.target.value)}
         onBlur={handleBlur}
         className={
-          "m-1 min-w-0 flex-1 cursor-pointer p-1 text-xl outline-none focus:cursor-text focus:border-b focus:border-black"
+          "m-2 min-w-0 flex-1 cursor-pointer p-px text-xl outline-none focus:cursor-text focus:border-b focus:border-black"
         }
       />
     </div>
