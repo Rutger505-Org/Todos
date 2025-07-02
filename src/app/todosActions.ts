@@ -1,5 +1,7 @@
 "use server";
 
+import "server-only";
+
 import { ensureAuthenticated } from "@/server/auth";
 import { db } from "@/server/db";
 import { todos } from "@/server/db/schema";
@@ -17,7 +19,7 @@ export async function getTodos() {
 export async function addTodo({ name }: { name: string }) {
   const session = await ensureAuthenticated();
 
-  return db.insert(todos).values({
+  await db.insert(todos).values({
     name,
     createdById: session.user.id,
   });
@@ -26,7 +28,7 @@ export async function addTodo({ name }: { name: string }) {
 export async function deleteTodo({ id }: { id: string }) {
   await ensureAuthenticated();
 
-  return db.delete(todos).where(eq(todos.id, id));
+  await db.delete(todos).where(eq(todos.id, id));
 }
 
 export async function changeTodo({ id, name }: { id: string; name: string }) {

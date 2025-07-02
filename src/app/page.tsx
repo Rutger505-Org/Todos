@@ -3,9 +3,13 @@ import { Header } from "@/app/_components/Header";
 import { Todos } from "@/app/_components/Todos";
 import { Button } from "@/components/ui/button";
 import { auth, signIn } from "@/server/auth";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await auth();
+  if (session) {
+    redirect("/dashboard");
+  }
 
   return (
     <div className="min-h-screen">

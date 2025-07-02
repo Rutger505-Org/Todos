@@ -1,6 +1,8 @@
+import "server-only";
+
 import { env } from "@/env";
-import { Database } from "bun:sqlite";
-import { drizzle } from "drizzle-orm/bun-sqlite";
+import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./schema";
 
 /**
@@ -8,11 +10,14 @@ import * as schema from "./schema";
  * update.
  */
 const globalForDb = globalThis as unknown as {
-  client: Database | undefined;
+  client: ReturnType<typeof createClient> | undefined;
 };
 
-export const client =
-  globalForDb.client ?? new Database(env.DATABASE_SQLITE_PATH);
+const client =
+  globalForDb.client ??
+  createClient({
+    url: `file:${env.DATABASE_SQLITE_PATH}`,
+  });
 if (env.NODE_ENV !== "production") globalForDb.client = client;
 
 export const db = drizzle(client, { schema });
