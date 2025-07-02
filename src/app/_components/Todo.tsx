@@ -48,19 +48,7 @@ export function Todo({ todo }: Readonly<Props>) {
   }
 
   return (
-    <div
-      className={
-        "flex w-72 items-center justify-between rounded-xl border px-3"
-      }
-    >
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        onBlur={handleBlur}
-        className={
-          "m-1 min-w-0 flex-1 cursor-pointer p-1 text-xl outline-none focus:cursor-text focus:border-b focus:border-black"
-        }
-      />
+    <div className={"flex w-72 items-center justify-between rounded-xl px-3"}>
       <button
         onClick={() => deleteMutation.mutate({ id: todo.id })}
         className={clsx(
@@ -70,6 +58,14 @@ export function Todo({ todo }: Readonly<Props>) {
       >
         <Trash2 size={16} />
       </button>
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        onBlur={handleBlur}
+        className={
+          "m-1 min-w-0 flex-1 cursor-pointer p-1 text-xl outline-none focus:cursor-text focus:border-b focus:border-black"
+        }
+      />
     </div>
   );
 }
