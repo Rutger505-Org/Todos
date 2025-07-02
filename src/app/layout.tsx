@@ -26,17 +26,17 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <QueryProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <QueryProvider>
           <div className="min-h-screen">
             <Header />
             {children}
           </div>
-        </body>
-      </html>
-    </QueryProvider>
+        </QueryProvider>
+      </body>
+    </html>
   );
 }
