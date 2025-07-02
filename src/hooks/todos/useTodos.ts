@@ -9,10 +9,11 @@ export function useTodos() {
   });
 
   return {
+    todos: query.data,
+    completedTodos: query.data?.filter((todo) => todo.completed) ?? [],
+    uncompletedTodos: query.data?.filter((todo) => !todo.completed) ?? [],
     data: query.data,
     isPending: query.isPending,
     error: query.error,
-    uncompletedTodos: query.data?.filter((todo) => !todo.completed),
-    completedTodos: query.data?.filter((todo) => todo.completed),
   };
 }
