@@ -1,10 +1,11 @@
 "use client";
 
+import { TodoAction } from "@/app/_components/TodoAction";
 import { deleteTodo, updateTodo } from "@/app/todosActions";
 import { type Todo } from "@/server/db/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { clsx } from "clsx";
-import { Trash2 } from "lucide-react";
+import { Circle, CircleX, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
@@ -53,15 +54,33 @@ export function Todo({ todo }: Readonly<Props>) {
         "flex max-w-96 items-center justify-between rounded-xl px-3 focus-within:shadow hover:shadow"
       }
     >
-      <button
+      <TodoAction
         onClick={() => deleteMutation.mutate({ id: todo.id })}
         className={clsx(
-          "flex aspect-square h-fit w-fit items-center justify-center rounded-full p-2 hover:bg-red-100",
+          deleteMutation.isPending && "cursor-not-allowed opacity-50",
+        )}
+        variant={"danger"}
+      >
+        <Trash2 size={16} />
+      </TodoAction>
+
+      <TodoAction
+        onClick={() =>
+          updateMutation.mutate({ id: todo.id, completed: !todo.completed })
+        }
+        className={clsx(
+          "group",
           deleteMutation.isPending && "cursor-not-allowed opacity-50",
         )}
       >
-        <Trash2 size={16} />
-      </button>
+        <span className={"group-hover:hidden"}>
+          <Circle size={16} />
+        </span>
+        <span className={"hidden group-hover:inline"}>
+          <CircleX size={16} />
+        </span>
+      </TodoAction>
+
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
