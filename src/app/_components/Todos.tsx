@@ -21,17 +21,13 @@ export function Todos() {
   if (error) {
     return <div>Something went wrong: {error.message}</div>;
   }
-  if (
-    (uncompletedTodos?.length ?? 0) === 0 &&
-    (completedTodos?.length ?? 0) === 0
-  ) {
-    return <div>No posts yet</div>;
+  if (!uncompletedTodos?.length && !completedTodos?.length) {
+    return <div>No todos yet</div>;
   }
 
   return (
     <div className={"flex flex-col gap-5"}>
       <div>
-        <h2 className="font-bold">Todos</h2>
         {uncompletedTodos?.length === 0 ? (
           <div>No uncompleted todos</div>
         ) : (

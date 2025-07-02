@@ -10,12 +10,10 @@ export default async function Dashboard() {
   }
 
   return (
-    <main className={"flex flex-col items-center gap-10"}>
-      <div className={"flex flex-col items-center space-y-2.5"}>
-        <h1 className="text-4xl font-bold">Todo&#39;s!</h1>
-      </div>
+    <main className={"space-y-10"}>
+      <h1 className="text-center text-4xl font-bold">Todo&#39;s!</h1>
 
-      <div className={"flex flex-col gap-10"}>
+      <div className={"mx-auto flex max-w-96 flex-col gap-5"}>
         <CreateTodo />
         <Todos />
       </div>

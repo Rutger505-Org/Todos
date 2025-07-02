@@ -32,7 +32,7 @@ export function CreateTodo() {
   });
 
   return (
-    <div>
+    <div className={"flex-1"}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((data) => mutate(data))}
