@@ -1,6 +1,7 @@
 "use client";
 
 import { TodoAction } from "@/app/_components/TodoAction";
+import { Logging } from "@/app/util/logging";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,9 +33,8 @@ export function Todo({ todo }: Readonly<Props>) {
   const updateMutation = useUpdateTodo({
     onError: (error, variables, context) => {
       if (!context?.previousChangedTodo) {
-        console.error(
-          "Error reverting todo, old todo not available",
-          variables.name,
+        Logging.error(
+          "Error reverting todo, old todo not available" + variables.name,
         );
         return;
       }

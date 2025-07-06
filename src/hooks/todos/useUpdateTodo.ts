@@ -1,4 +1,5 @@
 import { updateTodo } from "@/app/todosActions";
+import { Logging } from "@/app/util/logging";
 import { todoListQueryOptions } from "@/hooks/todos/useTodos";
 import { type Todo } from "@/server/db/schema";
 import { type MutationOptions } from "@tanstack/query-core";
@@ -60,7 +61,7 @@ export function useUpdateTodo(
         todoListQueryOptions().queryKey,
         context?.previousTodos,
       );
-      console.error("Error updating todo:", newTodo.name);
+      Logging.error("Error updating todo: " + newTodo.name);
 
       callbacks?.onError?.(error, newTodo, context);
     },

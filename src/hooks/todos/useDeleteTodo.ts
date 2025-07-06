@@ -1,4 +1,5 @@
 import { deleteTodo } from "@/app/todosActions";
+import { Logging } from "@/app/util/logging";
 import { todoListQueryOptions } from "@/hooks/todos/useTodos";
 import { type Todo } from "@/server/db/schema";
 import { type MutationOptions } from "@tanstack/query-core";
@@ -49,7 +50,7 @@ export function useDeleteTodo(
         todoListQueryOptions().queryKey,
         context?.previousTodos,
       );
-      console.error("Error deleting todo:", variables.id);
+      Logging.error("Error deleting todo: " + variables.id);
 
       callbacks?.onError?.(error, variables, context);
     },
