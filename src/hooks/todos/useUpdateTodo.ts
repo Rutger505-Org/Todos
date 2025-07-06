@@ -16,12 +16,27 @@ interface UpdateTodoContext {
   previousChangedTodo: Todo | undefined;
 }
 
-export function useUpdateTodo(
-  callbacks?: Pick<
-    MutationOptions<void, Error, UpdateTodoVariables, UpdateTodoContext>,
-    "onError" | "onSuccess" | "onMutate" | "onSettled"
-  >,
-) {
+export function useUpdateTodo(callbacks?: {
+  onError?: MutationOptions<
+    void,
+    Error,
+    UpdateTodoVariables,
+    UpdateTodoContext
+  >["onError"];
+  onSuccess?: MutationOptions<
+    void,
+    Error,
+    UpdateTodoVariables,
+    UpdateTodoContext
+  >["onSuccess"];
+  onMutate?: (variables: UpdateTodoVariables) => void | Promise<void>;
+  onSettled?: MutationOptions<
+    void,
+    Error,
+    UpdateTodoVariables,
+    UpdateTodoContext
+  >["onSettled"];
+}) {
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, UpdateTodoVariables, UpdateTodoContext>({

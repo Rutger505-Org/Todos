@@ -14,12 +14,27 @@ interface DeleteTodoContext {
   previousChangedTodo: Todo | undefined;
 }
 
-export function useDeleteTodo(
-  callbacks?: Pick<
-    MutationOptions<void, Error, DeleteTodoVariables, DeleteTodoContext>,
-    "onError" | "onSuccess" | "onMutate" | "onSettled"
-  >,
-) {
+export function useDeleteTodo(callbacks?: {
+  onError?: MutationOptions<
+    void,
+    Error,
+    DeleteTodoVariables,
+    DeleteTodoContext
+  >["onError"];
+  onSuccess?: MutationOptions<
+    void,
+    Error,
+    DeleteTodoVariables,
+    DeleteTodoContext
+  >["onSuccess"];
+  onMutate?: (variables: DeleteTodoVariables) => void | Promise<void>;
+  onSettled?: MutationOptions<
+    void,
+    Error,
+    DeleteTodoVariables,
+    DeleteTodoContext
+  >["onSettled"];
+}) {
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, DeleteTodoVariables, DeleteTodoContext>({

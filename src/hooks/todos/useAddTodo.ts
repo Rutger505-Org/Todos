@@ -15,12 +15,27 @@ interface AddTodoContext {
   optimisticTodo: Todo;
 }
 
-export function useAddTodo(
-  callbacks?: Pick<
-    MutationOptions<void, Error, AddTodoVariables, AddTodoContext>,
-    "onError" | "onSuccess" | "onMutate" | "onSettled"
-  >,
-) {
+export function useAddTodo(callbacks?: {
+  onError?: MutationOptions<
+    void,
+    Error,
+    AddTodoVariables,
+    AddTodoContext
+  >["onError"];
+  onSuccess?: MutationOptions<
+    void,
+    Error,
+    AddTodoVariables,
+    AddTodoContext
+  >["onSuccess"];
+  onMutate?: (variables: AddTodoVariables) => void | Promise<void>;
+  onSettled?: MutationOptions<
+    void,
+    Error,
+    AddTodoVariables,
+    AddTodoContext
+  >["onSettled"];
+}) {
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, AddTodoVariables, AddTodoContext>({
