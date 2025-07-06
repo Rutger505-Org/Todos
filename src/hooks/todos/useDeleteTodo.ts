@@ -10,6 +10,7 @@ interface DeleteTodoVariables {
 
 interface DeleteTodoContext {
   previousTodos: Todo[] | undefined;
+  previousDeletedTodo: Todo | undefined;
 }
 
 export function useDeleteTodo(
@@ -28,16 +29,17 @@ export function useDeleteTodo(
       await queryClient.cancelQueries({ queryKey: todoKeys.all });
 
       const previousTodos = queryClient.getQueryData<Todo[]>(todoKeys.all);
+      const previousDeletedTodo = previousTodos?.find(
+        (todo) => todo.id === variables.id,
+      );
 
-      // Optimistically remove the todo from the list
       queryClient.setQueryData<Todo[]>(todoKeys.all, (oldData) =>
         (oldData ?? []).filter((todo) => todo.id !== variables.id),
       );
 
-      return { previousTodos };
+      return { previousTodos, previousDeletedTodo };
     },
     onError: (error, variables, context) => {
-      // Restore the previous state on error
       queryClient.setQueryData(todoKeys.all, context?.previousTodos);
       console.error("Error deleting todo:", variables.id);
 
