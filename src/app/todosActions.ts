@@ -28,6 +28,8 @@ export async function addTodo({ name }: { name: string }) {
 export async function deleteTodo({ id }: { id: string }) {
   await ensureAuthenticated();
 
+  throw new Error("Method not implemented.");
+
   await db.delete(todos).where(eq(todos.id, id));
 }
 
