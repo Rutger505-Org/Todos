@@ -1,3 +1,4 @@
 export const todoKeys = {
-  all: ["todos"] as const,
+  all: ["todos"],
+  list: () => [...todoKeys.all, "todos"],
 };

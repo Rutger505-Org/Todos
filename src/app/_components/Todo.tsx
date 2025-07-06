@@ -1,6 +1,7 @@
 "use client";
 
 import { TodoAction } from "@/app/_components/TodoAction";
+import { Logging } from "@/app/util/logging";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,7 +30,21 @@ export function Todo({ todo }: Readonly<Props>) {
   const [completed, setCompleted] = useState(todo.completed);
 
   const deleteMutation = useDeleteTodo();
-  const updateMutation = useUpdateTodo();
+  const updateMutation = useUpdateTodo({
+    onError: (error, variables, context) => {
+      if (!context?.previousChangedTodo) {
+        Logging.error(
+          "Error reverting todo, old todo not available" + variables.name,
+        );
+        return;
+      }
+
+      const { previousChangedTodo } = context;
+
+      setName(previousChangedTodo.name);
+      setCompleted(previousChangedTodo.completed);
+    },
+  });
 
   function handleBlur() {
     if (name.trim() === "") {
@@ -41,13 +56,17 @@ export function Todo({ todo }: Readonly<Props>) {
       return;
     }
 
-    updateMutation.mutate({ id: todo.id, name });
+    updateMutation.mutate({ id: todo.id, completed: todo.completed, name });
   }
 
   function handleToggleCompleted() {
     setCompleted(!completed);
 
-    updateMutation.mutate({ id: todo.id, completed: !completed });
+    updateMutation.mutate({
+      id: todo.id,
+      name: todo.name,
+      completed: !completed,
+    });
   }
 
   return (

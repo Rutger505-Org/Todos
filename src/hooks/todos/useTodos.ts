@@ -1,12 +1,16 @@
 import { getTodos } from "@/app/todosActions";
 import { todoKeys } from "@/hooks/todos/todoKeys";
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 
-export function useTodos() {
-  const query = useQuery({
-    queryKey: todoKeys.all,
+export function todoListQueryOptions() {
+  return queryOptions({
+    queryKey: todoKeys.list(),
     queryFn: getTodos,
   });
+}
+
+export function useTodos() {
+  const query = useQuery(todoListQueryOptions());
 
   return {
     todos: query.data,

@@ -1,13 +1,81 @@
 import { deleteTodo } from "@/app/todosActions";
-import { todoKeys } from "@/hooks/todos/todoKeys";
+import { Logging } from "@/app/util/logging";
+import { todoListQueryOptions } from "@/hooks/todos/useTodos";
+import { type Todo } from "@/server/db/schema";
+import { type MutationOptions } from "@tanstack/query-core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function useDeleteTodo() {
+interface DeleteTodoVariables {
+  id: string;
+}
+
+interface DeleteTodoContext {
+  previousTodos: Todo[] | undefined;
+  previousChangedTodo: Todo | undefined;
+}
+
+export function useDeleteTodo(callbacks?: {
+  onError?: MutationOptions<
+    void,
+    Error,
+    DeleteTodoVariables,
+    DeleteTodoContext
+  >["onError"];
+  onSuccess?: MutationOptions<
+    void,
+    Error,
+    DeleteTodoVariables,
+    DeleteTodoContext
+  >["onSuccess"];
+  onMutate?: (variables: DeleteTodoVariables) => void | Promise<void>;
+  onSettled?: MutationOptions<
+    void,
+    Error,
+    DeleteTodoVariables,
+    DeleteTodoContext
+  >["onSettled"];
+}) {
   const queryClient = useQueryClient();
-  return useMutation({
+
+  return useMutation<void, Error, DeleteTodoVariables, DeleteTodoContext>({
     mutationFn: deleteTodo,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: todoKeys.all });
+    onMutate: async (variables) => {
+      await callbacks?.onMutate?.(variables);
+
+      await queryClient.cancelQueries({
+        queryKey: todoListQueryOptions().queryKey,
+      });
+
+      const previousTodos = queryClient.getQueryData(
+        todoListQueryOptions().queryKey,
+      );
+
+      const previousChangedTodo = previousTodos?.find(
+        (todo) => todo.id === variables.id,
+      );
+
+      queryClient.setQueryData(todoListQueryOptions().queryKey, (oldData) =>
+        (oldData ?? []).filter((todo) => todo.id !== variables.id),
+      );
+
+      return { previousTodos, previousChangedTodo };
     },
+    onError: (error, variables, context) => {
+      queryClient.setQueryData(
+        todoListQueryOptions().queryKey,
+        context?.previousTodos,
+      );
+      Logging.error("Error deleting todo: " + variables.id);
+
+      callbacks?.onError?.(error, variables, context);
+    },
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
+        queryKey: todoListQueryOptions().queryKey,
+      });
+
+      callbacks?.onSuccess?.(data, variables, context);
+    },
+    onSettled: callbacks?.onSettled,
   });
 }

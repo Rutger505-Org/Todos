@@ -3,6 +3,7 @@ import QueryProvider from "@/app/_components/providers/QueryProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { type ReactNode } from "react";
+import ToasterProvider from "./_components/providers/ToasterProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -36,6 +37,7 @@ export default function RootLayout({
             {children}
           </div>
         </QueryProvider>
+        <ToasterProvider />
       </body>
     </html>
   );

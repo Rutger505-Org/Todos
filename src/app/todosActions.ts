@@ -4,10 +4,10 @@ import "server-only";
 
 import { ensureAuthenticated } from "@/server/auth";
 import { db } from "@/server/db";
-import { todos } from "@/server/db/schema";
+import { type Todo, todos } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
-export async function getTodos() {
+export async function getTodos(): Promise<Todo[]> {
   const session = await ensureAuthenticated();
 
   return db.query.todos.findMany({
@@ -37,21 +37,10 @@ export async function updateTodo({
   completed,
 }: {
   id: string;
-  name?: string;
-  completed?: boolean;
+  name: string;
+  completed: boolean;
 }) {
   await ensureAuthenticated();
 
-  if (!name && completed === undefined) {
-    throw new Error("At least one field must be updated");
-  }
-
-  return db
-    .update(todos)
-    .set({
-      ...(name && { name }),
-      ...(completed !== undefined && { completed }),
-    })
-    .where(eq(todos.id, id))
-    .returning();
+  await db.update(todos).set({ name, completed }).where(eq(todos.id, id));
 }
