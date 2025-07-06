@@ -42,11 +42,5 @@ export async function updateTodo({
 }) {
   await ensureAuthenticated();
 
-  throw new Error("Not implemented yet");
-
-  return db
-    .update(todos)
-    .set({ name, completed })
-    .where(eq(todos.id, id))
-    .returning();
+  await db.update(todos).set({ name, completed }).where(eq(todos.id, id));
 }

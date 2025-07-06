@@ -29,7 +29,16 @@ export function Todo({ todo }: Readonly<Props>) {
   const [completed, setCompleted] = useState(todo.completed);
 
   const deleteMutation = useDeleteTodo();
-  const updateMutation = useUpdateTodo();
+  const updateMutation = useUpdateTodo({
+    onError: (error, variables, context) => {
+      if (!context?.previousEditedTodo) return;
+
+      const { previousEditedTodo } = context;
+
+      setName(previousEditedTodo.name);
+      setCompleted(previousEditedTodo.completed);
+    },
+  });
 
   function handleBlur() {
     if (name.trim() === "") {
