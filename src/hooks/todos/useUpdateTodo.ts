@@ -40,18 +40,17 @@ export function useUpdateTodo(
         (todo) => todo.id === newTodo.id,
       );
 
-      queryClient.setQueryData(todoListQueryOptions().queryKey, (oldData) =>
-        (oldData ?? []).map((todo) => {
-          return todo.id === newTodo.id
-            ? {
-                ...todo,
-                ...(newTodo.name && { name: newTodo.name }),
-                ...(newTodo.completed !== undefined && {
-                  completed: newTodo.completed,
-                }),
-              }
-            : todo;
-        }),
+      queryClient.setQueryData(
+        todoListQueryOptions().queryKey,
+        (oldData = []) =>
+          oldData.map((todo) => {
+            return todo.id === newTodo.id
+              ? {
+                  ...todo,
+                  ...newTodo,
+                }
+              : todo;
+          }),
       );
 
       return { previousTodos, previousChangedTodo };
