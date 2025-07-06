@@ -37,21 +37,16 @@ export async function updateTodo({
   completed,
 }: {
   id: string;
-  name?: string;
-  completed?: boolean;
+  name: string;
+  completed: boolean;
 }) {
   await ensureAuthenticated();
 
-  if (!name && completed === undefined) {
-    throw new Error("At least one field must be updated");
-  }
+  throw new Error("Not implemented yet");
 
   return db
     .update(todos)
-    .set({
-      ...(name && { name }),
-      ...(completed !== undefined && { completed }),
-    })
+    .set({ name, completed })
     .where(eq(todos.id, id))
     .returning();
 }

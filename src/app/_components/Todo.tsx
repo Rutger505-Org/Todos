@@ -41,13 +41,17 @@ export function Todo({ todo }: Readonly<Props>) {
       return;
     }
 
-    updateMutation.mutate({ id: todo.id, name });
+    updateMutation.mutate({ id: todo.id, completed: todo.completed, name });
   }
 
   function handleToggleCompleted() {
     setCompleted(!completed);
 
-    updateMutation.mutate({ id: todo.id, completed: !completed });
+    updateMutation.mutate({
+      id: todo.id,
+      name: todo.name,
+      completed: !completed,
+    });
   }
 
   return (
