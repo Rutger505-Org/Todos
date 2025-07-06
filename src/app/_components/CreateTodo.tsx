@@ -1,13 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAddTodo } from "@/hooks/todos/useAddTodo";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +16,14 @@ const createTodoSchema = z.object({
 type CreateTodoSchema = z.infer<typeof createTodoSchema>;
 
 export function CreateTodo() {
-  const { mutate } = useAddTodo();
+  const { mutate } = useAddTodo({
+    onMutate: () => {
+      form.reset();
+    },
+    onError: (error, variables, context) => {
+      form.setValue("name", context?.optimisticTodo.name ?? "");
+    },
+  });
 
   const form = useForm<CreateTodoSchema>({
     resolver: zodResolver(createTodoSchema),
@@ -46,7 +47,6 @@ export function CreateTodo() {
                 <FormControl>
                   <Input placeholder="Enter todo" {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
