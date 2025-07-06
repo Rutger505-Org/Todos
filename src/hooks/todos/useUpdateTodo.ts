@@ -12,7 +12,7 @@ interface UpdateTodoVariables {
 
 interface UpdateTodoContext {
   previousTodos: Todo[] | undefined;
-  previousEditedTodo: Todo | undefined;
+  previousChangedTodo: Todo | undefined;
 }
 
 export function useUpdateTodo(
@@ -32,30 +32,28 @@ export function useUpdateTodo(
         queryKey: todoListQueryOptions().queryKey,
       });
 
-      const previousTodos = queryClient.getQueryData<Todo[]>(
+      const previousTodos = queryClient.getQueryData(
         todoListQueryOptions().queryKey,
       );
-      const previousEditedTodo = previousTodos?.find(
+      const previousChangedTodo = previousTodos?.find(
         (todo) => todo.id === newTodo.id,
       );
 
-      queryClient.setQueryData<Todo[]>(
-        todoListQueryOptions().queryKey,
-        (oldData) =>
-          (oldData ?? []).map((todo) => {
-            return todo.id === newTodo.id
-              ? {
-                  ...todo,
-                  ...(newTodo.name && { name: newTodo.name }),
-                  ...(newTodo.completed !== undefined && {
-                    completed: newTodo.completed,
-                  }),
-                }
-              : todo;
-          }),
+      queryClient.setQueryData(todoListQueryOptions().queryKey, (oldData) =>
+        (oldData ?? []).map((todo) => {
+          return todo.id === newTodo.id
+            ? {
+                ...todo,
+                ...(newTodo.name && { name: newTodo.name }),
+                ...(newTodo.completed !== undefined && {
+                  completed: newTodo.completed,
+                }),
+              }
+            : todo;
+        }),
       );
 
-      return { previousTodos, previousEditedTodo };
+      return { previousTodos, previousChangedTodo };
     },
     onError: (error, newTodo, context) => {
       queryClient.setQueryData(

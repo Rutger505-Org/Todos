@@ -10,7 +10,7 @@ interface DeleteTodoVariables {
 
 interface DeleteTodoContext {
   previousTodos: Todo[] | undefined;
-  previousDeletedTodo: Todo | undefined;
+  previousChangedTodo: Todo | undefined;
 }
 
 export function useDeleteTodo(
@@ -34,16 +34,15 @@ export function useDeleteTodo(
         todoListQueryOptions().queryKey,
       );
 
-      const previousDeletedTodo = previousTodos?.find(
+      const previousChangedTodo = previousTodos?.find(
         (todo) => todo.id === variables.id,
       );
 
-      queryClient.setQueryData<Todo[]>(
-        todoListQueryOptions().queryKey,
-        (oldData) => (oldData ?? []).filter((todo) => todo.id !== variables.id),
+      queryClient.setQueryData(todoListQueryOptions().queryKey, (oldData) =>
+        (oldData ?? []).filter((todo) => todo.id !== variables.id),
       );
 
-      return { previousTodos, previousDeletedTodo };
+      return { previousTodos, previousChangedTodo };
     },
     onError: (error, variables, context) => {
       queryClient.setQueryData(
