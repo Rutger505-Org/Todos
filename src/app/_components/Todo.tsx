@@ -31,12 +31,18 @@ export function Todo({ todo }: Readonly<Props>) {
   const deleteMutation = useDeleteTodo();
   const updateMutation = useUpdateTodo({
     onError: (error, variables, context) => {
-      if (!context?.previousEditedTodo) return;
+      if (!context?.previousChangedTodo) {
+        console.error(
+          "Error reverting todo, old todo not available",
+          variables.name,
+        );
+        return;
+      }
 
-      const { previousEditedTodo } = context;
+      const { previousChangedTodo } = context;
 
-      setName(previousEditedTodo.name);
-      setCompleted(previousEditedTodo.completed);
+      setName(previousChangedTodo.name);
+      setCompleted(previousChangedTodo.completed);
     },
   });
 
