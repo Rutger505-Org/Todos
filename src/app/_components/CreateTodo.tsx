@@ -22,7 +22,7 @@ const createTodoSchema = z.object({
 type CreateTodoSchema = z.infer<typeof createTodoSchema>;
 
 export function CreateTodo() {
-  const { mutate, error, isPending } = useAddTodo();
+  const { mutate } = useAddTodo();
 
   const form = useForm<CreateTodoSchema>({
     resolver: zodResolver(createTodoSchema),
@@ -50,12 +50,11 @@ export function CreateTodo() {
               </FormItem>
             )}
           />
-          <Button disabled={isPending} type="submit" size={"icon"}>
+          <Button type="submit" size={"icon"}>
             <PlusIcon />
           </Button>
         </form>
       </Form>
-      <span>{error?.message}</span>
     </div>
   );
 }
