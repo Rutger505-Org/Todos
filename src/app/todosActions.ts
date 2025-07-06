@@ -4,10 +4,10 @@ import "server-only";
 
 import { ensureAuthenticated } from "@/server/auth";
 import { db } from "@/server/db";
-import { todos } from "@/server/db/schema";
+import { type Todo, todos } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
-export async function getTodos() {
+export async function getTodos(): Promise<Todo[]> {
   const session = await ensureAuthenticated();
 
   return db.query.todos.findMany({

@@ -1,5 +1,5 @@
 import { addTodo } from "@/app/todosActions";
-import { todoKeys } from "@/hooks/todos/todoKeys";
+import { todoListQueryOptions } from "@/hooks/todos/useTodos";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useAddTodo() {
@@ -7,7 +7,9 @@ export function useAddTodo() {
   return useMutation({
     mutationFn: addTodo,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: todoKeys.all });
+      await queryClient.invalidateQueries({
+        queryKey: todoListQueryOptions().queryKey,
+      });
     },
   });
 }
