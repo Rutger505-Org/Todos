@@ -1,10 +1,10 @@
-# Next template
+# Todos
 
-Next.js template for my personal needs.
+Next.js todo application.
 
 ## Getting started
 
-### Installation and Configuration
+### Development
 
 Copy the [.env.example](.env.example) file to a new file `.env` and fill in the variables.
 
@@ -12,28 +12,52 @@ Copy the [.env.example](.env.example) file to a new file `.env` and fill in the 
 cp .env.example .env
 ```
 
+Run the database migration command:
+
+```bash
+bun db:migrate
+```
+
+Then start the development server:
+
+```bash
+bun dev
+```
+
+### Using template
+
 #### Variables
 
-- `APPLICATION_NAME` - Used as an identifier for multiple actions such as the terraform workspace.
-- `IMAGE_REPOSITORY` - Image repository to store image to.
-- `BASE_DOMAIN` - Domain where to host the application (tags deployed to this domain, pull request's to a subdomain: the sha of the commit.)
-- `DOCKERHUB_USERNAME` - Dockerhub username
-- `AUTH_EMAIL_FROM_NAME` - Name and Email address of magic link sender (e.g. `Next Template <example@email.com>`)
+- `APPLICATION_NAME` - Used as an identifier for multiple actions such as the Kubernetes deployment name and Terraform workspace.
+- `BASE_DOMAIN` - Domain where to host the application. Tags are deployed to this domain; pull requests to a subdomain using the commit SHA (e.g. `<sha>.yourdomain.com`).
+- `DEPLOYMENT_AUTH_EMAIL_FROM` - Name and email address of the magic link sender (e.g. `Todos`).
+
+The following variables are configured at the organisation level and are inherited automatically — no action needed per repository.
+
+- `DOCKERHUB_USERNAME` - Docker Hub username for pushing images.
 
 #### Secrets
 
-- `AUTH_SECRET` - AUTH secret for encrypting jwt's
-- `AUTH_EMAIL_USER` - SMTP username (for gmail, this is your email address)
-- `AUTH_EMAIL_HOST` - SMTP host (e.g. `smtp.gmail.com`)
-- `AUTH_EMAIL_PORT` - SMTP port (e.g. `465`)
-- `AUTH_EMAIL_PASSWORD` - SMTP password (for gmail, this is your app password)
-- `DEPLOYMENT_DISCORD_WEBHOOK_URL` - Discord webhook url for alerts in application
-- `DOCKERHUB_TOKEN` - Dockerhub password
+The following secrets must be configured per repository.
+
+- `DEPLOYMENT_AUTH_SECRET` - Better Auth secret for encrypting JWTs (generate with `bunx auth secret --raw`).
+- `DEPLOYMENT_DISCORD_WEBHOOK_URL` - Discord webhook URL for in-application alerts.
+
+The following secrets are configured at the organisation level and are inherited automatically — no action needed per repository.
+
+- `KUBECONFIG` - Kubernetes cluster config for deploying to the cluster.
+- `TAILSCALE_OAUTH_CLIENT_ID` - Tailscale OAuth client ID used to connect the CI runner to the private cluster network.
+- `TAILSCALE_OAUTH_SECRET` - Tailscale OAuth secret paired with the client ID above.
+- `DOCKERHUB_USERNAME` - Docker Hub username for pushing images.
+- `DOCKERHUB_TOKEN` - Docker Hub access token.
+- `DEPLOYMENT_AUTH_EMAIL_HOST` - SMTP host (e.g. `smtp.gmail.com`).
+- `DEPLOYMENT_AUTH_EMAIL_PORT` - SMTP port (e.g. `465`).
+- `DEPLOYMENT_AUTH_EMAIL_USER` - SMTP username (for Gmail, this is your email address).
+- `DEPLOYMENT_AUTH_EMAIL_PASSWORD` - SMTP password (for Gmail, use an App Password).
 
 ## Deployments
 
-To configure deployment variables.
-Create a Github variable or secret and prefix it with `DEPLOYMENT_`.
+To pass additional environment variables to the running container, create a GitHub variable or secret and prefix the name with `DEPLOYMENT_`. The prefix is stripped before the value is injected into the container.
 
 ## Guides
 
